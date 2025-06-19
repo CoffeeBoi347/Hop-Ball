@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    public TileManager _instance;
+    public static TileManager _instance;
 
     public int tilesToInstantiate;
 
     [Header("Tile Prefab")]
 
+    public List<GameObject> tilesBeingSpawned;
     public List<GameObject> tileData;
     public GameObject objToSpawn;
     public Transform storeTiles;
@@ -40,6 +41,7 @@ public class TileManager : MonoBehaviour
     private void Start()
     {
         tilesToInstantiate = Random.Range(100, 200);
+        InstantiateTile();
     }
 
     private void Update()
@@ -63,8 +65,9 @@ public class TileManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3(randomPosX, 0f, 0f);
         GameObject _tileSpawned = Instantiate(objToSpawn, spawnPosition, Quaternion.identity, storeTiles.transform);
         itemsSpawned++;
+        tilesBeingSpawned.Add(_tileSpawned);
         canSpawn = false;
-        StartCoroutine(SetCanSpawnToTrue(3f));
+        StartCoroutine(SetCanSpawnToTrue(1f));
     }
 
     private IEnumerator SetCanSpawnToTrue(float time)
